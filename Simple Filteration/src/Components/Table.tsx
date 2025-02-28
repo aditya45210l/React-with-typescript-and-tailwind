@@ -97,20 +97,20 @@ const Table = () => {
 
   const filteredProjects = projects.filter(
     (project) =>
-      searchQueary === "" ||
-      (Object.values(project).some((value) =>
+      (searchQueary === "" ||
+      Object.values(project).some((value) =>
         value.toLowerCase().includes(searchQueary.toLowerCase())
-      ) &&
-        filter.name === "") ||
-      (project.client.toLowerCase().includes(filter.name.toLowerCase()) &&
-        filter.country === "") ||
-      (project.country.toLowerCase().includes(filter.country.toLowerCase()) &&
-        filter.email === "") ||
-      (project.email.toLowerCase().includes(filter.email.toLowerCase()) &&
-        filter.project === "") ||
-      (project.project.toLowerCase().includes(filter.project.toLowerCase()) &&
-        filter.status === "") ||
-      project.status.toLowerCase().includes(filter.status.toLowerCase())
+      )) &&
+        (filter.name === "" ||
+      project.client.toLowerCase().includes(filter.name.toLowerCase())) &&
+      (filter.country === "" ||
+      project.country.toLowerCase().includes(filter.country.toLowerCase())) &&
+        (filter.email === "" ||
+      project.email.toLowerCase().includes(filter.email.toLowerCase())) &&
+        (filter.project === "" ||
+      project.project.toLowerCase().includes(filter.project.toLowerCase())) &&
+        (filter.status === "" ||
+      project.status.toLowerCase().includes(filter.status.toLowerCase()))
   );
 
   const [currentPage, setCurrentpage] = useState<number>(1);
