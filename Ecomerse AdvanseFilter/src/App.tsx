@@ -1,15 +1,22 @@
-
-import SideBar from './Components/SideBar'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import Layout from './Components/Layout'
 import MainBar from './Components/MainBar'
-import { RightSideBar } from './Components/RightSideBar'
+import ProductPage from './Components/ProductPage';
+
+
+const route = createBrowserRouter([
+  {path:'/',
+    element:<Layout/>,
+    children:[
+      {index:true, element:<MainBar/>},
+      {path:'product/:id',element:<ProductPage/>}
+    ]
+  }
+]);
 
 const App = () => {
   return (
-    <div className="min-h-screen grid xl:grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr] grid-cols-1 gap-1 p-0.5 font-Roboto">
-      <SideBar/>
-      <MainBar/>
-      <RightSideBar/>
-    </div>
+    <RouterProvider router={route}/>
   )
 }
 

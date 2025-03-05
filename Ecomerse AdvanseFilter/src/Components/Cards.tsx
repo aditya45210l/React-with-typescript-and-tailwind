@@ -1,8 +1,11 @@
 import { FaCartShopping } from "react-icons/fa6";
+import { useNavigate } from "react-router";
+
 
 const Cards = () => {
+  const navigation = useNavigate();
   return (
-    <div className="flex flex-col items-center gap-0.5 rounded border border-gray-100 p-2 shadow hover:shadow-2xl active:shadow-xl transition-all duration-100" onClick={() =>console.log(1)}>
+    <div className="flex flex-col items-center gap-0.5 rounded border border-gray-100 p-2 shadow hover:shadow-2xl active:shadow-xl transition-all duration-100" onClick={() =>navigation('/product/2')}>
       <div>
         <img
         

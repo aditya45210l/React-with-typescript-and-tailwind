@@ -5,6 +5,7 @@ import Cards from "./Cards";
 const MainBar = () => {
   const [filterRotate, setFilterRotate] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+  
 
   useEffect(() => {
     if (filterRotate) {

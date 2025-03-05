@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useFilterContext } from "./FilterContext";
 
 interface product {
   category: string;
@@ -10,7 +11,7 @@ interface FetchProduts {
 
 const SideBar = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [keyowrds, setKeywords] = useState([
+  const [keyowrds] = useState([
     "apple",
     "watch",
     "fashion",
@@ -18,6 +19,42 @@ const SideBar = () => {
     "shoes",
     "shirt",
   ]);
+  const {
+    searchQuery,
+    setSearchQuery,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    selectedCategory,
+    setSelectedCategory,
+    setKeywords,
+  } = useFilterContext();
+
+  const handleMinPrice = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMinPrice(value ? parseFloat(value) : undefined);
+  };
+  const handleMaxPrice = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMaxPrice(value ? parseFloat(value) : undefined);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const handleKeywordChange = (keyword: string) => {
+    setKeywords(keyword);
+  };
+
+  const handleResertButton = () => {
+    setSearchQuery("");
+    setSelectedCategory("");
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
+    setKeywords("");
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,9 +79,11 @@ const SideBar = () => {
         <div className="grid grid-cols-2 gap-1">
           <div className="col-span-2 rounded-sm border-2 border-gray-300 p-1">
             <input
+              value={searchQuery}
               type="text"
               className="w-full px-3 py-1 transition-all duration-100 outline-none"
               placeholder="Search Products"
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="rounded-sm border-2 border-gray-300 p-1">
@@ -52,13 +91,17 @@ const SideBar = () => {
               type="number"
               className="w-full px-3 py-1 transition-all duration-100 outline-none"
               placeholder="Min"
+              value={minPrice}
+              onChange={handleMinPrice}
             />
           </div>
           <div className="rounded-sm border-2 border-gray-300 p-1">
             <input
+              value={maxPrice}
               type="number"
               className="w-full px-3 py-1 transition-all duration-100 outline-none"
               placeholder="Max"
+              onChange={handleMaxPrice}
             />
           </div>
         </div>
@@ -69,7 +112,13 @@ const SideBar = () => {
             {categories &&
               categories.map((item) => (
                 <li className="flex gap-1" key={item}>
-                  <input type="radio" id={item} name="categories" />
+                  <input
+                    type="radio"
+                    id={item}
+                    name="categories"
+                    checked={selectedCategory === item}
+                    onChange={() => handleCategoryChange(item)}
+                  />
                   <label className="cursor-pointer" htmlFor={item}>
                     {item}
                   </label>
@@ -84,7 +133,10 @@ const SideBar = () => {
             {keyowrds &&
               keyowrds.map((item) => (
                 <li key={item}>
-                  <button className="w-full cursor-pointer rounded-sm border-2 border-gray-300 px-2 py-2 text-center transition-all duration-100 hover:bg-gray-100">
+                  <button
+                    onClick={() => handleKeywordChange(item)}
+                    className="w-full cursor-pointer rounded-sm border-2 border-gray-300 px-2 py-2 text-center transition-all duration-100 hover:bg-gray-100"
+                  >
                     {item.toUpperCase()}
                   </button>
                 </li>
@@ -93,7 +145,10 @@ const SideBar = () => {
         </div>
         {/* Reset Filter Button */}
         <div>
-          <button className="w-full cursor-pointer rounded bg-black py-2 text-lg font-semibold text-white transition-all duration-100 hover:bg-gray-700 active:bg-black">
+          <button
+            onClick={handleResertButton}
+            className="w-full cursor-pointer rounded bg-black py-2 text-lg font-semibold text-white transition-all duration-100 hover:bg-gray-700 active:bg-black"
+          >
             Reset Filter
           </button>
         </div>
